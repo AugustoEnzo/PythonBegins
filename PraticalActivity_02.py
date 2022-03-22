@@ -38,16 +38,14 @@ def calc_amount():
     return sum_amount
 
 def s_order():
-    i =0
-    while i <= 2:
-        t0 = order_data['Order Code']
-        print(t0)
-        t1 = order_data['Item']
-        t2 = order_data['Value']
-        e = 0
-        while e <= len(t0):
-            print('Code: {} | Item: {} | Value: {}'.format(t0[e], t1[e], t2[e]))
-            e += 1
+    t0 = order_data['Order Code']
+    t1 = order_data['Item']
+    t2 = order_data['Value']
+    e = 0
+    while e <= len(t0):
+        print(e)
+        print('Code: {} | Item: {} | Value: {}'.format(t0[e], t1[e], t2[e]))
+        e += 1
 while True:
     print('Select a option with the code: ')
     for i in range(0, len(id), 1):
