@@ -58,18 +58,19 @@ while True: # Start the main code with a infinity loop
         print("You've selected: ") # Introduct the user to the next step
         if type(info) is list: # Valid if the info is a list or a string
             print('Code: {} | Description: {} | Value: {}'.format(info[1], info[3], info[5])) # Print the item selected now, containing code, description and value
+            print('- -' * 20)  # Effect of separation
+            order = take_info(info) # Call the function that takes the info from the orders and assing the return to a transaction var, that hold the data that will be transfered to the order_data dictionary, with the absolute data
+            order_data['Order Code'].append(count)  # Append the count of orders to order_data
+            order_data['Item'].append(order[0])  # Append the item name to order_data
+            order_data['Value'].append(order[1])  # Append the item value to order_data
+            prog = input('Do you want to continue: [Y][N]')  # Ask if the user wants to make a new order
+            if prog not in 'Yy':  # Valid if the user wants to continue ordering and continue the program loop, if not break the infinity loop and finish the program
+                print('Finishing...')
+                break
+            continue
         else:
-            print(info) # print the error return of the function
-        print('- -' * 20) # Effect of separation
-        order = take_info(info) # Call the function that takes the info from the orders and assing the return to a transaction var, that hold the data that will be transfered to the order_data dictionary, with the absolute data
-        order_data['Order Code'].append(count) # Append the count of orders to order_data
-        order_data['Item'].append(order[0]) # Append the item name to order_data
-        order_data['Value'].append(order[1]) # Append the item value to order_data
-        prog= input('Do you want to continue: [Y][N]') # Ask if the user wants to make a new order
-        if prog not in 'Yy':  # Valid if the user wants to continue ordering and continue the program loop, if not break the infinity loop and finish the program
-            print('Finishing...')
-            break
-        continue
+            print(info) # print the error return of the function and returns to begin of the program
+            continue
     elif cod == 0: # Valid if the user wants to finish the program before selecting a item, if yes (insert 0) break the infinite loop and finishe the program, else continue ordering
         print('Finishing...')
         break
