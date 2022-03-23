@@ -69,7 +69,10 @@ while True: # Start the main code with a infinity loop
                 break
             continue
         else:
+            print('- -' * 20)  # Effect of separation
             print(info) # print the error return of the function and returns to begin of the program
+            print('Try Again...') # Encourage the user to try again
+            print('- -' * 20)  # Effect of separation
             continue
     elif cod == 0: # Valid if the user wants to finish the program before selecting a item, if yes (insert 0) break the infinite loop and finishe the program, else continue ordering
         print('Finishing...')
