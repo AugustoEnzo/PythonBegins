@@ -16,47 +16,52 @@ def val_dim(h1, l1, w1):
     val = False
     if type(height) is not float or type(length) is not float or type(width) is not float:
         if type(height) is not float and type(length)  is float and type(width) is float:
-            print('The height value is invalid, please input again...')
+            return 'The height value is invalid, please input again...'
         elif type(height) is float and type(length) is not float and type(width) is float:
-            print('The length value is invalid, please input again...')
+            return 'The length value is invalid, please input again...'
         elif type(height) is float and type(length) is float and type(width) is not float:
-            print('The width values is invalid, please input again...')
+            return 'The width values is invalid, please input again...'
         else:
-            print('Please, insert all dimensions again.')
+            return 'Please, insert all dimensions again.'
     if height > 0 and length > 0 and width > 0:
         if height < 10000 and length < 10000 and width < 10000:
-            print('Valid parameters!')
+            return 'Valid parameters!'
         else:
-            print('Too large dimensions, please revise them.')
+            return 'Too large dimensions, please revise them.'
     else:
-        print('Too tiny dimensions, please revise them.')
+        return 'Too tiny dimensions, please revise them.'
 
 def val_weight(p1):
     weight: float = p1
     if p1 <= 0 or p1 > 30:
-        print('Invalid weight,please insert again.')
+        return 'Invalid weight,please insert again.'
     else:
-        print('Valid weight.')
+        return 'Valid weight.'
 
 def val_route(p1):
     route: str = p1
     if len(route) <= 1:
         if route in dest_code:
-            print('Valid code!')
+            return 'Valid code!'
         else:
-            print('Invalid code entered, please insert again!')
+            return 'Invalid code entered, please insert again!'
     else:
-        print("You've inserted a too long code, please revise them.")
+        return "You've inserted a too long code, please revise them."
 
 def input_data():
     while True:
         height: float = float(input('Insert the height of the object: [cm]'))
         length:float = float(input('Insert the length of the object: [cm]'))
         width:float = float(input('Insert the height of the object: [cm]'))
-        val_dim(height, length, width)
+        val_d: str = val_dim(height, length, width)
+        print(val_d)
         weight: float = float(input('Insert the weight value: [kg]'))
-        val_weight(weight)
+        val_w:str = val_weight(weight)
+        print(val_w)
         for e in range(dest_code):
             print('Code: {} - Route: {}'.format(dest_code[e], dest_route[e]))
-        route: str = str(input('Insert the destiny wanted: [RS]'))
-        val_route(route)
+        val_r = ''
+        while val_r != 'Valid code!':
+            route: str = str(input('Insert the destiny wanted: [RS]'))
+            val_r: str = val_route(route)
+            print(val_r)
