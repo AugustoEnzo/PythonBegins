@@ -16,7 +16,7 @@ def val_dim():
     try:
         if type(height) is float or type(length) is float or type(width) is float:
             if height > 0 and length > 0 and width > 0:
-                if height < 10000 and length < 10000 and width < 10000:
+                if height < 1000 and length < 1000 and width < 1000:
                     return 'Valid parameters!'
                 else:
                     return 'Too large dimensions, please revise them.'
@@ -28,20 +28,29 @@ def val_dim():
 
 
 def val_weight():
-    if weight <= 0 or weight > 30:
-        return 'Invalid weight,please insert again.'
-    else:
-        return 'Valid weight.'
+    try:
+        if type(weight) is float:
+            if weight <= 0 or weight > 30:
+                return 'Invalid weight,please insert again.'
+            else:
+                return 'Valid weight.'
+    except:
+        print("You've entered a invalid value, please insert again.")
+        return TypeError
 
 
 def val_route():
-    if len(route) <= 1:
-        if route in dest_code:
-            return 'Valid code!'
+    if type(route) is str:
+        if len(route) <= 1:
+            if route in dest_code:
+                return 'Valid code!'
+            else:
+                return 'Invalid code entered, please insert again!'
         else:
-            return 'Invalid code entered, please insert again!'
+            return "You've inserted a too long code, please revise them."
     else:
-        return "You've inserted a too long code, please revise them."
+        print("You've entered a invalid value, please insert again.")
+        return TypeError
 
 
 def input_data():
@@ -73,19 +82,43 @@ def input_data():
 def dimensions_object():
     volume: float = float(height * width * length)
     vol_cost: float = 0
-    tier: int = 0
+    vol_tier: int = 0
     try:
         if volume < 1000:
-            tier = 1
+            vol_tier = 1
             vol_cost = 10
         elif 1000 <= volume < 10000:
-            tier = 2
+            vol_tier = 2
             vol_cost = 20
         elif 10000 <= volume < 30000:
-            tier = 3
+            vol_tier = 3
             vol_cost = 30
         elif 30000 <= volume < 100000:
-            tier = 4
+            vol_tier = 4
             vol_cost = 50
+        else:
+            print("You've  a too much bulky baggage, please redirect himself to the gate to be evaluated.")
     finally:
-        return vol_cost, tier
+        return vol_cost, vol_tier
+
+
+def weight_object():
+    wei_mult: float = 0
+    wei_tier = 1
+    try:
+        if 0 > weight < 0.1:
+            wei_mult = 1
+            wei_tier = 1
+        elif 0.1 >= weight < 1:
+            wei_mult = 1.5
+            wei_tier = 2
+        elif 1 >= weight < 10:
+            wei_mult = 2
+            wei_tier = 3
+        elif 10 >= weight < 30:
+            wei_mult = 3
+            wei_tier = 4
+        else:
+            print('You have a too heavy baggage, please redirect himself to the gate to be evaluated.')
+    finally:
+        return wei_mult, wei_tier
