@@ -154,4 +154,15 @@ def route_object():
 
 def main_calculation():
     global total
-    total = ((vol_tier * wei_mult) * mult_route)
+    total = ((vol_c* wei_m) * route_m)
+
+
+# Main program:
+while True:
+    input_data()
+    vol_c = dimensions_object()[0]
+    vol_t = dimensions_object()[1]
+    wei_m = weight_object()[0]
+    wei_t = weight_object()[1]
+    route_m = route_object()[0]
+    route_t = route_object()[1]
