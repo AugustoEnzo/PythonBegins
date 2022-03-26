@@ -80,6 +80,7 @@ def input_data():
 
 
 def dimensions_object():
+    global volume, vol_cost, vol_tier
     volume: float = float(height * width * length)
     vol_cost: float = 0
     vol_tier: int = 0
@@ -122,3 +123,32 @@ def weight_object():
             print('You have a too heavy baggage, please redirect himself to the gate to be evaluated.')
     finally:
         return wei_mult, wei_tier
+
+
+def route_object():
+    try:
+        global mult_route, tier_route
+        mult_route: float = float(0)
+        tier_route: int = 0
+        if route == 'RS':
+            mult_route = 1
+            tier_route = 1
+        elif route == 'SR':
+            mult_route = 1
+            tier_route = 1
+        elif route == 'BS':
+            mult_route = 1.2
+            tier_route = 2
+        elif route == 'SB':
+            mult_route = 1.2
+            tier_route = 2
+        elif route == 'BR':
+            mult_route = 1.5
+            tier_route = 3
+        elif route == 'RB':
+            mult_route = 1.5
+            tier_route = 3
+    finally:
+        return tier_route, mult_route
+
+#def main_calculations():
