@@ -104,6 +104,7 @@ def dimensions_object():
 
 
 def weight_object():
+    global wei_mult, wei_tier
     wei_mult: float = 0
     wei_tier = 1
     try:
@@ -149,6 +150,8 @@ def route_object():
             mult_route = 1.5
             tier_route = 3
     finally:
-        return tier_route, mult_route
+        return mult_route, tier_route
 
-#def main_calculations():
+def main_calculation():
+    global total
+    total = ((vol_tier * wei_mult) * mult_route)
