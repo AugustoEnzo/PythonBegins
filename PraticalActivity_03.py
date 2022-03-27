@@ -21,7 +21,7 @@ def val_dim(height, length, width):
                 else:
                     return 'Too large dimensions, please revise them.'
             else:
-                return 'Too tiny dimensions, please revise them.'
+                return 'Negative dimensions are not accepted, please revise them.'
     except:
         print("You've inserted a invalid number, please try again")
         return TypeError
@@ -150,31 +150,40 @@ def src_dest(route):
 while True:
     val_d = ''
     while val_d != 'Valid parameters!':
-        h: float = float(input('Insert the height of the object: [cm] '))
-        l: float = float(input('Insert the length of the object: [cm] '))
-        w: float = float(input('Insert the width of the object: [cm] '))
-        val_d: str = val_dim(h, l, w)
-        print(val_d)
+        try:
+            h: float = float(input('Insert the height of the object: [cm] '))
+            l: float = float(input('Insert the length of the object: [cm] '))
+            w: float = float(input('Insert the width of the object: [cm] '))
+            val_d: str = val_dim(h, l, w)
+            print(val_d)
+        except:
+            print("You've entered an invalid value, only are allowed numeric values!\n Please Try again...")
     val_w = ''
     while val_w != 'Valid weight.':
-        weight: float = float(input('Insert the weight value: [kg] '))
-        val_w: str = val_weight()
-        print(val_w)
+        try:
+            weight: float = float(input('Insert the weight value: [kg] '))
+            val_w: str = val_weight()
+            print(val_w)
+        except:
+            print("You've entered an invalid value, only are allowed numeric values!\n Please Try again...")
     e = 0
     while e < len(dest_code):
         print('Code: {} - Route: {}'.format(dest_code[e], dest_descr[e]))
         e += 1
     val_r = ''
     while val_r != 'Valid code!':
-        route: str = input('Insert the destiny wanted: [RS] ')
-        val_r: str = val_route()
-        print(val_r)
+        try:
+            route: str = input('Insert the destiny wanted: [RS] ')
+            val_r: str = val_route()
+            print(val_r)
+        except:
+            print("You've entered an invalid value, only are allowed alphabetic characters!\n Please Try again...")
     vol, vol_c, vol_t = dimensions_object()
     wei_m, wei_t = weight_object()
     route_m, route_t = route_object()
     tot = main_calculation()
     source, destiny = src_dest(route)
-    print("The travel with source: {} and destiny: {}.\nResults in: {}".format(source, destiny, tot))
+    print("The travel with source: {} and destiny: {}.\nHave a total value of: R$ {:.2g}".format(source, destiny, tot))
     print("With the following characteristics: \n Volume: {:.1g} cm³ with the cost of: R$ {:.2g} and be in the: {:.0g}º volume tier\n"
           " the weight was: {:.2g} kg with the: {:.1g}º weight tier".format(vol, vol_c, vol_t, weight, wei_t))
     ctn:str = input('Do you want to continue: [Y]\[N] ')
