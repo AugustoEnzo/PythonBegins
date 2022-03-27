@@ -12,7 +12,7 @@ dest_route = {'Code': [dest_code], 'Description': [dest_descr], 'Multiplier': [d
 count = 0
 
 
-def val_dim():
+def val_dim(height, length, width):
     try:
         if type(height) is float or type(length) is float or type(width) is float:
             if height > 0 and length > 0 and width > 0:
@@ -41,7 +41,7 @@ def val_weight():
 
 def val_route():
     if type(route) is str:
-        if len(route) <= 1:
+        if len(route) <= 2:
             if route in dest_code:
                 return 'Valid code!'
             else:
@@ -53,35 +53,8 @@ def val_route():
         return TypeError
 
 
-def input_data():
-    while True:
-        val_d = ''
-        while val_d != 'Valid parameters!':
-            height: float = float(input('Insert the height of the object: [cm]'))
-            length: float = float(input('Insert the length of the object: [cm]'))
-            width: float = float(input('Insert the height of the object: [cm]'))
-            global height, length, width
-            val_d: str = val_dim()
-            print(val_d)
-        val_w = ''
-        while val_w != 'Valid weight.':
-            weight: float = float(input('Insert the weight value: [kg]'))
-            global weight
-            val_w: str = val_weight()
-            print(val_w)
-        for e in range(dest_code):
-            print('Code: {} - Route: {}'.format(dest_code[e], dest_route[e]))
-        val_r = ''
-        while val_r != 'Valid code!':
-            global route
-            route: str = str(input('Insert the destiny wanted: [RS]'))
-            val_r: str = val_route()
-            print(val_r)
-
-
 def dimensions_object():
-    global volume, vol_cost, vol_tier
-    volume: float = float(height * width * length)
+    volume: float = float(h * l * w)
     vol_cost: float = 0
     vol_tier: int = 0
     try:
@@ -100,24 +73,23 @@ def dimensions_object():
         else:
             print("You've  a too much bulky baggage, please redirect himself to the gate to be evaluated.")
     finally:
-        return vol_cost, vol_tier
+        return volume, vol_cost, vol_tier
 
 
 def weight_object():
-    global wei_mult, wei_tier
     wei_mult: float = 0
-    wei_tier = 1
+    wei_tier = 0
     try:
         if 0 > weight < 0.1:
             wei_mult = 1
             wei_tier = 1
-        elif 0.1 >= weight < 1:
+        elif 0.1 <= weight < 1:
             wei_mult = 1.5
             wei_tier = 2
-        elif 1 >= weight < 10:
+        elif 1 <= weight < 10:
             wei_mult = 2
             wei_tier = 3
-        elif 10 >= weight < 30:
+        elif 10 <= weight < 30:
             wei_mult = 3
             wei_tier = 4
         else:
@@ -128,7 +100,6 @@ def weight_object():
 
 def route_object():
     try:
-        global mult_route, tier_route
         mult_route: float = float(0)
         tier_route: int = 0
         if route == 'RS':
@@ -155,14 +126,58 @@ def route_object():
 def main_calculation():
     global total
     total = ((vol_c* wei_m) * route_m)
+    return total
 
+def src_dest(route):
+    code = route
+    src: str = ''
+    dest: str = ''
+    if code[0] == 'R':
+        src = 'Rio de Janeiro'
+    elif code[0] == 'S':
+        src = 'São Paulo'
+    elif code[0] == 'B':
+        src = 'Brasilia'
+    if code[1] == 'S':
+        dest = 'São Paulo'
+    elif code[1] == 'B':
+        dest = 'Brasilia'
+    elif code[1] == 'R':
+        dest = 'Rio de Janeiro'
+    return src, dest
 
 # Main program:
 while True:
-    input_data()
-    vol_c = dimensions_object()[0]
-    vol_t = dimensions_object()[1]
-    wei_m = weight_object()[0]
-    wei_t = weight_object()[1]
-    route_m = route_object()[0]
-    route_t = route_object()[1]
+    val_d = ''
+    while val_d != 'Valid parameters!':
+        h: float = float(input('Insert the height of the object: [cm] '))
+        l: float = float(input('Insert the length of the object: [cm] '))
+        w: float = float(input('Insert the width of the object: [cm] '))
+        val_d: str = val_dim(h, l, w)
+        print(val_d)
+    val_w = ''
+    while val_w != 'Valid weight.':
+        weight: float = float(input('Insert the weight value: [kg] '))
+        val_w: str = val_weight()
+        print(val_w)
+    e = 0
+    while e < len(dest_code):
+        print('Code: {} - Route: {}'.format(dest_code[e], dest_descr[e]))
+        e += 1
+    val_r = ''
+    while val_r != 'Valid code!':
+        route: str = input('Insert the destiny wanted: [RS] ')
+        val_r: str = val_route()
+        print(val_r)
+    vol, vol_c, vol_t = dimensions_object()
+    wei_m, wei_t = weight_object()
+    route_m, route_t = route_object()
+    tot = main_calculation()
+    source, destiny = src_dest(route)
+    print("The travel with source: {} and destiny: {}.\nResults in: {}".format(source, destiny, tot))
+    print("With the following characteristics: \n Volume: {:.1g} cm³ with the cost of: R$ {:.2g} and be in the: {:.0g}º volume tier\n"
+          " the weight was: {:.2g} kg with the: {:.1g}º weight tier".format(vol, vol_c, vol_t, weight, wei_t))
+    ctn:str = input('Do you want to continue: [Y]\[N] ')
+    if ctn not in 'Yy':
+        print('Finishing...')
+        break
