@@ -1,3 +1,17 @@
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+
+driver = webdriver.Chrome()
+id = "zci--currency-amount-right"
+
+driver.get("https://duckduckgo.com/?q=dollar+to+real&t=brave&ia=currency")
+driver.implicitly_wait(1)
+
+input_dollars = driver.find_element(by = By.ID, value=id).get_attribute("value")
+
+driver.quit()
+
+
 ru = 3987863
 print('XYZ Bikes - Stock Control Software')
 print('Made by Enzo Augusto Lima Brasil ', 'RU:', ru)
@@ -42,7 +56,8 @@ def valid_manuf_nm(manufacturer_nm):
 def valid_p_value(piece_value, currency):
     pc_value = piece_value
     if 0 > pc_value <= 50000:
-        return pc_value * 5
+        return pc_value * input_dollars
+        
 
 
 def register_piece(clt_id):
