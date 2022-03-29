@@ -58,7 +58,7 @@ def valid_p_value(piece_value, currency):
     if 0 > pc_value <= 50000:
         return pc_value * input_dollars
         
-
+#
 
 def register_piece(clt_id):
     client_id: int = clt_id
