@@ -33,7 +33,7 @@ ru = 3987863
 print('XYZ Bikes - Stock Control Software')
 print('Made by Enzo Augusto Lima Brasil ', 'RU:', ru)
 
-piece_data: dict[str, list[Any]] = {'Client Id':[], 'Piece Name':[], 'Manufacturer Name':[],'Piece value':[]}
+piece_data: dict[str, list[Any]] = {'Client ID':[], 'Piece ID':[], 'Piece Name':[], 'Manufacturer Name':[],'Piece value':[]}
 
 
 def valid_pic_name(piece_nm):
@@ -76,14 +76,13 @@ def valid_p_value(piece_value, currency):
     global conv_value
     pc_value = piece_value
     cond = ''
-
     if 0 > pc_value <= 50000:
         cond = 'Valid piece value!'
     else:
         if pc_value < 0:
             cond = "You've inserted a negative value, please insert it again."
         elif pc_value > 50000:
-            cond = "Certainly you don't need a manufacturer name bigger than fifty thousands, please insert it again."
+            cond = "Certainly you don't need a piece value bigger than fifty thousands dollars, please insert it again."
     if len(currency) == 2:
         if currency == 'US':
             us_price = get_dollars()
@@ -92,35 +91,42 @@ def valid_p_value(piece_value, currency):
             br_price = get_real()
             conv_value = piece_value * br_price
     else:
-        cond = "Your condition need to be exactly equal one of the options US or BR."
+        cond = "Your condition need to be exactly the same at one of the options US or BR."
     return cond, conv_value
 
 
-def register_piece(clt_id):
-    global manufacturer_nm, piece_vle, currency
-    client_id: int = clt_id
-    val_p_name = ''
-    piece_nm = ''
-    while val_p_name != 'Valid piece name!':
-        piece_nm = str(input('Insert your piece name: '))
-        val_p_name = valid_pic_name(piece_nm)
-        print(val_p_name)
-    val_m_name = ''
-    while val_m_name != 'Valid manufacturer name!':
-        manufacturer_nm = str(input('Insert the manufacturer name: US$ '))
-        val_m_name = valid_manuf_nm(manufacturer_nm)
-        print(val_m_name)
-    val_p_vle = ''
-    while val_p_vle != 'Valid piece value!':
-        piece_vle: float = float(input('Insert your piece value: '))
-        currency: str = str(input('Input the currency that you want to convert: [US/BR]'))
-        val_p_vle,tot_converted  = valid_p_value(piece_vle, currency)
-        print(val_p_vle)
-    piece_data['Client Id'].append(client_id)
-    piece_data['Piece Name'].append(piece_nm)
-    piece_data['Manufacturer Name'].append(manufacturer_nm)
-    piece_data['Piece value'].append(piece_vle)
-
+def register_piece(p_id):
+    client_id = 1
+    while True:
+        global manufacturer_nm, piece_vle, currency
+        piece_id: int = p_id
+        val_p_name = ''
+        piece_nm = ''
+        while val_p_name != 'Valid piece name!':
+            piece_nm = str(input('Insert your piece name: '))
+            val_p_name = valid_pic_name(piece_nm)
+            print(val_p_name)
+        val_m_name = ''
+        while val_m_name != 'Valid manufacturer name!':
+            manufacturer_nm = str(input('Insert the manufacturer name: US$ '))
+            val_m_name = valid_manuf_nm(manufacturer_nm)
+            print(val_m_name)
+        val_p_vle = ''
+        while val_p_vle != 'Valid piece value!':
+            piece_vle: float = float(input('Insert your piece value: '))
+            currency: str = str(input('Input the currency that you want to convert: [US/BR]'))
+            val_p_vle, tot_converted = valid_p_value(piece_vle, currency)
+            print(val_p_vle)
+        piece_data['Client ID'].append(client_id)
+        piece_data['Piece ID'].append(piece_id)
+        piece_data['Piece Name'].append(piece_nm)
+        piece_data['Manufacturer Name'].append(manufacturer_nm)
+        piece_data['Piece value'].append(piece_vle)
+        cont: str = str(input('Do you want to continue: [y/n] '))
+        if cont.upper() != 'Y':
+            print('Finishing this step...')
+            break
+    client_id += 1
 
 def query_piece():
     print('[1] - Query all pieces \n [2] - Query pieces by piece name \n [3] - Query pieces by code \n [4] - Query '
@@ -193,20 +199,41 @@ def query_piece():
                 for i in range(0, len(m_nm), 1):
                     if inp_man_nm == m_nm[i]:
                         if currency == 'US':
-                            print('Client ID: {} | Piece Name: {} | Manufacturer Name: {}| Piece value: US$ {:.2f}'.format(
-                                piece_data['Client Id'[i]],
-                                piece_data['Piece Name'][i],
-                                piece_data['Manufacturer Name'][i],
-                                piece_data['Piece value'][i]))
+                            print('Client ID: {} | Piece ID: {} | Piece Name: {} | Manufacturer Name: {} | Piece value: US$ {:.2f}'.format(
+                                piece_data['Client ID'][i], piece_data['Piece ID'][i], piece_data['Piece Name'][i],
+                                piece_data['Manufacturer Name'][i], piece_data['Piece value'][i]))
                         elif currency == 'BR':
-                            print('Client ID: {} | Piece Name: {} | Manufacturer Name: {}| Piece value: RS$ {:.2f}'.format(
-                                piece_data['Client Id'[i]],
-                                piece_data['Piece Name'][i],
-                                piece_data['Manufacturer Name'][i],
-                                piece_data['Piece value'][i]))
+                            print('Client ID: {} | Piece ID: {} | Piece Name: {} | Manufacturer Name: {}| Piece value: RS$ {:.2f}'.format(
+                                piece_data['Client ID'][i], piece_data['Piece ID'][i], piece_data['Piece Name'][i],
+                                piece_data['Manufacturer Name'][i], piece_data['Piece value'][i]))
                         cont: str = str(input("Do you want to continue: [Y/N]"))
                         if cont.upper != 'Y':
-                            print("Finishing...")
+                            print("Finishing this step...")
                             break
             else:
-                 print("You've inserted a manufacturer name that doesn't are in the database, please insert it again...")
+                 print("You've inserted a manufacturer name that doesn't are in the database, please insert it again.")
+
+def remove_piece():
+    piece_code = piece_data['Piece ID']
+    while True:
+        rem_piec_cd: str = str(input('Insert the code of the piece that you want to remove: '))
+        if piece_code in piece_code:
+            for code in piece_code:
+                if rem_piec_cd == piece_code:
+                    if currency == 'US':
+                        print("Client ID: {} | Piece ID: {} | Piece Name: {} | Manufacturer Name: {} | Piece value: US$ {}".format(
+                            piece_data['Client ID'][code], piece_data['Piece ID'][code], piece_data['Piece Name'][code],
+                            piece_data['Manufacturer Name'][code], piece_data['Piece value'][code]))
+                    elif currency == 'BR':
+                        print("Client ID: {} | Piece ID: {} | Piece Name: {} | Manufacturer Name: {} | Piece value: RS$ {}".format(
+                            piece_data['Client ID'][code], piece_data['Piece ID'][code], piece_data['Piece Name'][code],
+                            piece_data['Manufacturer Name'][code], piece_data['Piece value'][code]))
+                    cond: str = str(input('Do you really want to delete this piece: [y][n]'))
+                    if cond.upper() == 'Y':
+                        piece_data['Client ID'].remove(code)
+                        piece_data['Piece ID'].remove(code)
+                        piece_data['Piece Name'].remove(code)
+                        piece_data['Manufacturer Name'].remove(code)
+                        piece_data['Piece value'].remove(code)
+        else:
+             print("Your code hasn't in the database, please verify it and try again...")
