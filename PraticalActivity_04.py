@@ -95,11 +95,11 @@ def valid_p_value(piece_value, currency):
     return cond, conv_value
 
 
-def register_piece(p_id):
-    client_id = 1
+def register_piece(cl_id, p_id):
+    global piece_vle, currency, manufacturer_nm
+    piece_id: int = p_id
+    client_id = cl_id
     while True:
-        global manufacturer_nm, piece_vle, currency
-        piece_id: int = p_id
         val_p_name = ''
         piece_nm = ''
         while val_p_name != 'Valid piece name!':
@@ -117,6 +117,7 @@ def register_piece(p_id):
             currency: str = str(input('Input the currency that you want to convert: [US/BR]'))
             val_p_vle, tot_converted = valid_p_value(piece_vle, currency)
             print(val_p_vle)
+        piece_id += 1
         piece_data['Client ID'].append(client_id)
         piece_data['Piece ID'].append(piece_id)
         piece_data['Piece Name'].append(piece_nm)
@@ -129,49 +130,23 @@ def register_piece(p_id):
     client_id += 1
 
 def query_piece():
-    print('[1] - Query all pieces \n [2] - Query pieces by piece name \n [3] - Query pieces by code \n [4] - Query '
-          'pieces per Manufacturer \n [5] - Return')
-    menu: str = input('Select the option that you want to query the database: [1|2|3]')
-    if menu == 1:
-        for i in range(0, len(piece_data['Client Id']), 1):
-            print('Client ID: {} | Piece Name: {} | Manufacturer Name: {}| Piece value: {}'.format(
-                piece_data['Client Id'[i]],
-                piece_data['Piece Name'][i],
-                piece_data['Manufacturer Name'][i],
-                piece_data['Piece value'][i]))
-
-    elif menu == 2:
-        p_nm: list = piece_data['Piece Name']
-        while True:
-            inp_p_nm: str = str(input('Insert the piece name that you want to search for: [Carter]'))
-            if inp_p_nm in p_nm:
-                for i in range(0, len(p_nm), 1):
-                    if currency == 'US':
-                        print("Client ID: {} | Piece Name: {} | Manufacturer Name: {}| Piece value: US$ {:.2f}".format(
-                            piece_data['Client Id'[i]],
-                            piece_data['Piece Name'][i],
-                            piece_data['Manufacturer Name'][i],
-                            piece_data['Piece value'][i]))
-                    elif currency == 'BR':
-                        print("Client ID: {} | Piece Name: {} | Manufacturer Name: {}| Piece value: RS$ {:.2f}".format(
-                            piece_data['Client Id'[i]],
-                            piece_data['Piece Name'][i],
-                            piece_data['Manufacturer Name'][i],
-                            piece_data['Piece value'][i]))
-                cont: str = input("Do you want to continue searching [Y/N]")
-                if cont.upper != 'Y':
-                    print('Finishing...')
-                    break
-            else:
-                print("The piece name that you've entered was not located in the database, please it again...")
-
-    elif menu == 3:
-        c_id: list = piece_data['Client Id']
-        while True:
-            inp_c_id: int = int(input('Insert the code that you want to search: [1]'))
-            if inp_c_id in c_id:
-                for i in range(0, len(piece_data['Client Id']), 1):
-                    if inp_c_id == c_id[i]:
+    while True:
+        print('[1] - Query all pieces \n [2] - Query pieces by piece name \n [3] - Query pieces by code \n [4] - Query '
+              'pieces per Manufacturer \n [5] - Return')
+        menu_q: str = input('Select the option that you want to query the database: [1|2|3]')
+        if menu_q == 1:
+            for i in range(0, len(piece_data['Client Id']), 1):
+                print('Client ID: {} | Piece Name: {} | Manufacturer Name: {}| Piece value: {}'.format(
+                    piece_data['Client Id'[i]],
+                    piece_data['Piece Name'][i],
+                    piece_data['Manufacturer Name'][i],
+                    piece_data['Piece value'][i]))
+        elif menu_q == 2:
+            p_nm: list = piece_data['Piece Name']
+            while True:
+                inp_p_nm: str = str(input('Insert the piece name that you want to search for: [Carter]'))
+                if inp_p_nm in p_nm:
+                    for i in range(0, len(p_nm), 1):
                         if currency == 'US':
                             print("Client ID: {} | Piece Name: {} | Manufacturer Name: {}| Piece value: US$ {:.2f}".format(
                                 piece_data['Client Id'[i]],
@@ -184,34 +159,62 @@ def query_piece():
                                 piece_data['Piece Name'][i],
                                 piece_data['Manufacturer Name'][i],
                                 piece_data['Piece value'][i]))
-                cont: str = input('Do you want to continue searching [Y/N]')
-                if cont not in 'Yy':
-                    print('Finishing...')
-                    break
-            else:
-                print("The code you've inserted aren't in the database, please try again...")
+                    cont: str = input("Do you want to continue searching [Y/N]")
+                    if cont.upper != 'Y':
+                        print('Finishing...')
+                        break
+                else:
+                    print("The piece name that you've entered was not located in the database, please it again...")
+        elif menu_q == 3:
+            c_id: list = piece_data['Client Id']
+            while True:
+                inp_c_id: int = int(input('Insert the code that you want to search: [1]'))
+                if inp_c_id in c_id:
+                    for i in range(0, len(piece_data['Client Id']), 1):
+                        if inp_c_id == c_id[i]:
+                            if currency == 'US':
+                                print("Client ID: {} | Piece Name: {} | Manufacturer Name: {}| Piece value: US$ {:.2f}".format(
+                                    piece_data['Client Id'[i]],
+                                    piece_data['Piece Name'][i],
+                                    piece_data['Manufacturer Name'][i],
+                                    piece_data['Piece value'][i]))
+                            elif currency == 'BR':
+                                print("Client ID: {} | Piece Name: {} | Manufacturer Name: {}| Piece value: RS$ {:.2f}".format(
+                                    piece_data['Client Id'[i]],
+                                    piece_data['Piece Name'][i],
+                                    piece_data['Manufacturer Name'][i],
+                                    piece_data['Piece value'][i]))
+                    cont: str = input('Do you want to continue searching [Y/N]')
+                    if cont not in 'Yy':
+                        print('Finishing...')
+                        break
+                else:
+                    print("The code you've inserted aren't in the database, please try again...")
+        elif menu_q == 4:
+            while True:
+                inp_man_nm: str = str(input('Insert the manufacturer name: [ARMOR-IIMAK]'))
+                m_nm: list = piece_data['Manufacturer Name']
+                if inp_man_nm in m_nm:
+                    for i in range(0, len(m_nm), 1):
+                        if inp_man_nm == m_nm[i]:
+                            if currency == 'US':
+                                print('Client ID: {} | Piece ID: {} | Piece Name: {} | Manufacturer Name: {} | Piece value: US$ {:.2f}'.format(
+                                    piece_data['Client ID'][i], piece_data['Piece ID'][i], piece_data['Piece Name'][i],
+                                    piece_data['Manufacturer Name'][i], piece_data['Piece value'][i]))
+                            elif currency == 'BR':
+                                print('Client ID: {} | Piece ID: {} | Piece Name: {} | Manufacturer Name: {}| Piece value: RS$ {:.2f}'.format(
+                                    piece_data['Client ID'][i], piece_data['Piece ID'][i], piece_data['Piece Name'][i],
+                                    piece_data['Manufacturer Name'][i], piece_data['Piece value'][i]))
+                            cont: str = str(input("Do you want to continue: [Y/N]"))
+                            if cont.upper != 'Y':
+                                print("Finishing this step...")
+                                break
+                else:
+                     print("You've inserted a manufacturer name that doesn't are in the database, please insert it again.")
+        elif menu_q == 5:
+            print('Returning to main menu...')
+            break
 
-    elif menu == 4:
-        while True:
-            inp_man_nm: str = str(input('Insert the manufacturer name: [ARMOR-IIMAK]'))
-            m_nm: list = piece_data['Manufacturer Name']
-            if inp_man_nm in m_nm:
-                for i in range(0, len(m_nm), 1):
-                    if inp_man_nm == m_nm[i]:
-                        if currency == 'US':
-                            print('Client ID: {} | Piece ID: {} | Piece Name: {} | Manufacturer Name: {} | Piece value: US$ {:.2f}'.format(
-                                piece_data['Client ID'][i], piece_data['Piece ID'][i], piece_data['Piece Name'][i],
-                                piece_data['Manufacturer Name'][i], piece_data['Piece value'][i]))
-                        elif currency == 'BR':
-                            print('Client ID: {} | Piece ID: {} | Piece Name: {} | Manufacturer Name: {}| Piece value: RS$ {:.2f}'.format(
-                                piece_data['Client ID'][i], piece_data['Piece ID'][i], piece_data['Piece Name'][i],
-                                piece_data['Manufacturer Name'][i], piece_data['Piece value'][i]))
-                        cont: str = str(input("Do you want to continue: [Y/N]"))
-                        if cont.upper != 'Y':
-                            print("Finishing this step...")
-                            break
-            else:
-                 print("You've inserted a manufacturer name that doesn't are in the database, please insert it again.")
 
 def remove_piece():
     piece_code = piece_data['Piece ID']
@@ -237,3 +240,24 @@ def remove_piece():
                         piece_data['Piece value'].remove(code)
         else:
              print("Your code hasn't in the database, please verify it and try again...")
+             continue
+        cont: str = str(input("Do you want to remove another piece: [y|n]"))
+        if cont.upper() != 'N':
+            print('Finishing the delete module...')
+            break
+
+
+# Main program:
+client_id = 1
+piece_id = 0
+while True:
+    print("{} | MENU | {}".format('-'*20, '-'*20))
+    print(" [1] - Register Piece \n [2] - Query Piece \n [3] - Remove Piece \n [4] - Exit")
+    m_menu:str = str(input("Insert the job that you want to do: "))
+    if m_menu == 1:
+        register_piece(client_id, piece_id)
+        client_id = piece_data['Client ID'][-1]
+        piece_id = piece_data['Piece ID'][-1]
+        continue
+    if m_menu == 2:
+        query_piece()
